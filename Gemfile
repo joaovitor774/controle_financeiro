@@ -81,5 +81,7 @@ gem "prawn"
 #Permite criar componentes reutilizáveis.
 gem "rails-i18n"
 
-#Segurança básica
-gem "brakeman", require: false
+#visualizar o banco de dados
+gem "rails_db"
+
+gem "bcrypt", "~> 3.1.7"

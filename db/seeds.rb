@@ -7,3 +7,23 @@
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
+account_types = %w[checking savings credit_card cash]
+category_kinds = %w[income expense]
+entry_types = %w[income expense]
+entry_statuses = %w[pending paid canceled]
+
+account_types.each do |name|
+  AccountType.find_or_create_by!(name: name)
+end
+
+category_kinds.each do |name|
+  CategoryKind.find_or_create_by!(name: name)
+end
+
+entry_types.each do |name|
+  EntryType.find_or_create_by!(name: name)
+end
+
+entry_statuses.each do |name|
+  EntryStatus.find_or_create_by!(name: name)
+end

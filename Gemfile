@@ -85,3 +85,6 @@ gem "rails-i18n"
 gem "rails_db"
 
 gem "bcrypt", "~> 3.1.7"
+
+#Autenticação
+gem "devise"

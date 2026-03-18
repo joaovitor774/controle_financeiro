@@ -1,0 +1,79 @@
+@import "bootstrap";
+
+body {
+  background-color: #f3f6f8;
+  color: #111827;
+}
+
+.navbar {
+  background-color: #ffffff !important;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.navbar-brand {
+  font-weight: 700;
+  color: #111827 !important;
+}
+
+.nav-link {
+  color: #4b5563 !important;
+  font-weight: 500;
+}
+
+.nav-link:hover {
+  color: #111827 !important;
+}
+
+.card {
+  border: 1px solid #e5e7eb;
+  border-radius: 18px;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+  background: #fff;
+}
+
+.btn-primary {
+  border-radius: 12px;
+  font-weight: 600;
+}
+
+.btn-outline-secondary {
+  border-radius: 12px;
+  font-weight: 600;
+}
+
+.section-title {
+  color: #111827;
+}
+
+.section-subtitle {
+  color: #6b7280;
+  line-height: 1.7;
+}
+
+.auth-wrapper {
+  min-height: calc(100vh - 120px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 0;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 430px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 18px;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+  padding: 2rem;
+}
+
+.auth-card .form-control {
+  border-radius: 12px;
+  padding: 0.75rem 0.9rem;
+}
+
+.auth-card .btn {
+  border-radius: 12px;
+  font-weight: 600;
+}

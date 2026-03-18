@@ -2,7 +2,10 @@ class AccountsController < ApplicationController
   before_action :set_account, only: %i[ show edit update destroy ]
 
   def index
-    @accounts = current_user.accounts
+    @accounts = current_user.accounts.includes(:account_type)
+    @total_balance = @accounts.sum(:initial_balance)
+    @active_accounts_count = @accounts.where(active: true).count
+    @accounts_count = @accounts.count
   end
 
   def show

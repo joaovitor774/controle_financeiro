@@ -1,0 +1,97 @@
+<% content_for :title, "Dashboard | Controle Financeiro" %>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <div>
+    <h2 class="fw-bold mb-1">Dashboard</h2>
+    <p class="text-secondary mb-0">Resumo da sua vida financeira</p>
+  </div>
+
+  <%= link_to "Nova transação", new_entry_path , class: "btn btn-primary" %>
+</div>
+
+<div class="row g-4 mb-4">
+  <div class="col-md-4">
+    <div class="card p-4 h-100">
+      <p class="text-secondary mb-2">Entradas</p>
+      <h3 class="fw-bold text-success mb-0">
+        <%= number_to_currency(@income_total, unit: "R$ ", separator: ",", delimiter: ".") %>
+      </h3>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="card p-4 h-100">
+      <p class="text-secondary mb-2">Saídas</p>
+      <h3 class="fw-bold text-danger mb-0">
+        <%= number_to_currency(@expense_total, unit: "R$ ", separator: ",", delimiter: ".") %>
+      </h3>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="card p-4 h-100">
+      <p class="text-secondary mb-2">Saldo</p>
+      <h3 class="fw-bold <%= @balance >= 0 ? 'text-success' : 'text-danger' %> mb-0">
+        <%= number_to_currency(@balance, unit: "R$ ", separator: ",", delimiter: ".") %>
+      </h3>
+    </div>
+  </div>
+</div>
+
+<div class="card p-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h4 class="fw-bold mb-0">Transações recentes</h4>
+  </div>
+
+  <% if @recent_entries.any? %>
+    <div class="table-responsive">
+      <table class="table align-middle mb-0">
+        <thead>
+          <tr>
+            <th>Descrição</th>
+            <th>Categoria</th>
+            <th>Conta</th>
+            <th>Tipo</th>
+            <th>Status</th>
+            <th>Data</th>
+            <th class="text-end">Valor</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @recent_entries.each do |entry| %>
+            <tr>
+              <td><%= entry.description %></td>
+              <td><%= entry.category&.name %></td>
+              <td><%= entry.account&.name %></td>
+              <td>
+                <% if entry.entry_type&.name == "income" %>
+                  <span class="badge bg-success">Entrada</span>
+                <% else %>
+                  <span class="badge bg-danger">Saída</span>
+                <% end %>
+              </td>
+              <td>
+                <% case entry.entry_status&.name %>
+                <% when "paid" %>
+                  <span class="badge bg-primary">Pago</span>
+                <% when "pending" %>
+                  <span class="badge bg-warning text-dark">Pendente</span>
+                <% when "canceled" %>
+                  <span class="badge bg-secondary">Cancelado</span>
+                <% else %>
+                  <span class="badge bg-light text-dark">-</span>
+                <% end %>
+              </td>
+              <td><%= l(entry.occurred_on) %></td>
+              <td class="text-end fw-semibold <%= entry.entry_type&.name == 'income' ? 'text-success' : 'text-danger' %>">
+                <%= number_to_currency(entry.amount, unit: "R$ ", separator: ",", delimiter: ".") %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% else %>
+    <p class="text-secondary mb-0">Você ainda não possui transações cadastradas.</p>
+  <% end %>
+</div>

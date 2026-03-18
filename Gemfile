@@ -77,6 +77,7 @@ gem "pagy"
 
 #PDF
 gem "prawn"
+gem "prawn-table"
 
 #Permite criar componentes reutilizáveis.
 gem "rails-i18n"

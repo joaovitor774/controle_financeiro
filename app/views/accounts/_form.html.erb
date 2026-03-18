@@ -1,16 +1,39 @@
+<%= form_with(model: account, class: "card shadow-sm p-4") do |form| %>
+  <% if account.errors.any? %>
+    <div class="alert alert-danger">
+      <h5><%= pluralize(account.errors.count, "erro") %> impediram salvar a conta:</h5>
+      <ul class="mb-0">
+        <% account.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
 
-<%= simple_form_for(@account) do |f| %>
-  <%= f.error_notification %>
-  <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
-
-  <div class="form-inputs">
-    <%= f.input :name %>
-    <%= f.input :initial_balance %>
-    <%= f.input :active %>
-    <%= form.collection_select :account_type_id, AccountType.all, :id, :name %>
+  <div class="mb-3">
+    <%= form.label :name, "Nome da conta", class: "form-label" %>
+    <%= form.text_field :name, class: "form-control" %>
   </div>
 
-  <div class="form-actions">
-    <%= f.button :submit %>
+  <div class="mb-3">
+    <%= form.label :account_type_id, "Tipo de conta", class: "form-label" %>
+    <%= form.collection_select :account_type_id, AccountType.all, :id, :name,
+          { prompt: "Selecione um tipo" },
+          { class: "form-select" } %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :initial_balance, "Saldo inicial", class: "form-label" %>
+    <%= form.number_field :initial_balance, step: 0.01, class: "form-control" %>
+  </div>
+
+  <div class="form-check mb-3">
+    <%= form.check_box :active, class: "form-check-input" %>
+    <%= form.label :active, "Conta ativa", class: "form-check-label" %>
+  </div>
+
+  <div class="d-flex gap-2">
+    <%= form.submit "Salvar", class: "btn btn-primary" %>
+    <%= link_to "Voltar", accounts_path, class: "btn btn-secondary" %>
   </div>
 <% end %>

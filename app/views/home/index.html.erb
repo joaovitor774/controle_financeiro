@@ -1,41 +1,78 @@
-<% content_for :title, "inicio | Controle Financeiro" %>
+<% content_for :title, "Início | Controle Financeiro" %>
 
-<div class="p-5 mb-4 bg-white rounded-3 shadow-sm">
-  <div class="container-fluid py-3">
-    <h1 class="display-6 fw-bold">Bem-vindo ao Controle Financeiro</h1>
-    <p class="col-md-8 fs-5 text-secondary">
-      Organize suas contas, acompanhe receitas e despesas e gere relatórios mensais com mais clareza.
-    </p>
+<section class="py-5">
+  <div class="container">
+    <div class="row justify-content-center text-center">
+      <div class="col-lg-8">
+        <h1 class="display-4 fw-bold mb-3 section-title">
+          Controle suas finanças de forma simples e eficiente
+        </h1>
 
-    <hr>
+        <p class="fs-5 section-subtitle mb-4">
+          Acompanhe suas entradas e saídas, visualize relatórios e organize sua vida financeira com mais clareza.
+        </p>
 
-    <div class="row g-3 mt-2">
+       <div class="d-flex justify-content-center gap-3 flex-wrap">
+        <% if user_signed_in? %>
+          <%= link_to "Ir para contas", accounts_path, class: "btn btn-primary btn-lg px-4" %>
+        <% else %>
+          <%= link_to "Começar agora", new_user_registration_path, class: "btn btn-primary btn-lg px-4" %>
+          <%= link_to "Já tenho uma conta", new_user_session_path, class: "btn btn-outline-secondary btn-lg px-4" %>
+        <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="py-5">
+  <div class="container">
+    <div class="text-center mb-5">
+      <h2 class="fw-bold section-title">Tudo que você precisa para organizar suas finanças</h2>
+    </div>
+
+    <div class="row g-4">
       <div class="col-md-4">
-        <div class="card border-0 shadow-sm h-100">
+        <div class="card h-100 p-3">
           <div class="card-body">
-            <h5 class="card-title">Contas</h5>
-            <p class="card-text text-secondary">Cadastre contas como carteira, banco e poupança.</p>
+            <div class="mb-3 fs-4">📈</div>
+            <h5 class="card-title fw-semibold">Entradas e saídas</h5>
+            <p class="card-text text-secondary">
+              Registre todas as suas transações de forma rápida e organizada por categorias.
+            </p>
           </div>
         </div>
       </div>
 
       <div class="col-md-4">
-        <div class="card border-0 shadow-sm h-100">
+        <div class="card h-100 p-3">
           <div class="card-body">
-            <h5 class="card-title">Lançamentos</h5>
-            <p class="card-text text-secondary">Registre entradas e saídas com categoria e data.</p>
+            <div class="mb-3 fs-4">📊</div>
+            <h5 class="card-title fw-semibold">Relatórios detalhados</h5>
+            <p class="card-text text-secondary">
+              Visualize seus gastos e acompanhe a evolução mensal das suas finanças.
+            </p>
           </div>
         </div>
       </div>
 
       <div class="col-md-4">
-        <div class="card border-0 shadow-sm h-100">
+        <div class="card h-100 p-3">
           <div class="card-body">
-            <h5 class="card-title">Relatórios</h5>
-            <p class="card-text text-secondary">Gere relatórios mensais em PDF para análise financeira.</p>
+            <div class="mb-3 fs-4">🧾</div>
+            <h5 class="card-title fw-semibold">Controle completo</h5>
+            <p class="card-text text-secondary">
+              Organize contas, categorias e lançamentos em um só lugar.
+            </p>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
+</section>
+
+<footer class="py-4 border-top mt-5">
+  <div class="container text-center text-secondary small">
+    Controle Financeiro - Sistema de organização financeira pessoal
+  </div>
+</footer>

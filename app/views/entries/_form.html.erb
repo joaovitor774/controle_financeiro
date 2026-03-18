@@ -1,0 +1,108 @@
+<%= form_with(model: entry, class: "card shadow-sm p-4") do |form| %>
+  <% if entry.errors.any? %>
+    <div class="alert alert-danger">
+      <h5><%= pluralize(entry.errors.count, "erro") %> impediram salvar a transação:</h5>
+      <ul class="mb-0">
+        <% entry.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="row g-3">
+    <div class="col-md-6">
+      <%= form.label :description, "Descrição", class: "form-label" %>
+      <%= form.text_field :description, class: "form-control", placeholder: "Ex: Salário, Mercado, Uber..." %>
+    </div>
+
+    <div class="col-md-6">
+      <%= form.label :amount, "Valor", class: "form-label" %>
+      <%= form.number_field :amount, step: 0.01, class: "form-control", placeholder: "0,00" %>
+    </div>
+
+    <div class="col-md-6">
+      <%= form.label :entry_type_id, "Tipo", class: "form-label" %>
+      <%= form.select :entry_type_id,
+            options_for_select(@entry_type_options, entry.entry_type_id),
+            { prompt: "Selecione o tipo" },
+            { class: "form-select", id: "entry_type_select" } %>
+    </div>
+
+    <div class="col-md-6">
+      <%= form.label :entry_status_id, "Status", class: "form-label" %>
+      <%= form.select :entry_status_id,
+            options_for_select(@entry_status_options, entry.entry_status_id || @paid_status_id),
+            {},
+            { class: "form-select" } %>
+    </div>
+
+    <div class="col-md-6">
+      <%= form.label :account_id, "Conta", class: "form-label" %>
+      <%= form.collection_select :account_id, @accounts, :id, :name,
+            { prompt: "Selecione a conta" },
+            { class: "form-select" } %>
+    </div>
+
+    <div class="col-md-6">
+      <%= form.label :category_id, "Categoria", class: "form-label" %>
+      <%= form.select :category_id, [], { prompt: "Selecione a categoria" }, { class: "form-select", id: "category_select" } %>
+    </div>
+
+    <div class="col-md-6">
+      <%= form.label :occurred_on, "Data", class: "form-label" %>
+      <%= form.date_field :occurred_on, class: "form-control", value: entry.occurred_on || Date.today %>
+    </div>
+
+    <div class="col-12">
+      <%= form.label :notes, "Observações", class: "form-label" %>
+      <%= form.text_area :notes, rows: 3, class: "form-control", placeholder: "Opcional" %>
+    </div>
+  </div>
+
+  <div class="d-flex gap-2 mt-4">
+    <%= form.submit "Salvar transação", class: "btn btn-primary" %>
+    <%= link_to "Voltar", dashboard_path, class: "btn btn-secondary" %>
+  </div>
+<% end %>
+
+<script>
+  document.addEventListener("turbo:load", function () {
+    const typeSelect = document.getElementById("entry_type_select");
+    const categorySelect = document.getElementById("category_select");
+
+    if (!typeSelect || !categorySelect) return;
+
+    const incomeCategories = <%= raw @income_categories.map { |c| { id: c.id, name: c.name } }.to_json %>;
+    const expenseCategories = <%= raw @expense_categories.map { |c| { id: c.id, name: c.name } }.to_json %>;
+    const selectedCategoryId = "<%= entry.category_id %>";
+
+    function populateCategories() {
+      const selectedText = typeSelect.options[typeSelect.selectedIndex]?.text;
+      let categories = [];
+
+      if (selectedText === "Entrada") {
+        categories = incomeCategories;
+      } else if (selectedText === "Saída") {
+        categories = expenseCategories;
+      }
+
+      categorySelect.innerHTML = '<option value="">Selecione a categoria</option>';
+
+      categories.forEach(category => {
+        const option = document.createElement("option");
+        option.value = category.id;
+        option.textContent = category.name;
+
+        if (selectedCategoryId && String(category.id) === String(selectedCategoryId)) {
+          option.selected = true;
+        }
+
+        categorySelect.appendChild(option);
+      });
+    }
+
+    typeSelect.addEventListener("change", populateCategories);
+    populateCategories();
+  });
+</script>

@@ -1,0 +1,91 @@
+pt-BR:
+
+  # =========================
+  # MODELS / TIPOS
+  # =========================
+  account_types:
+    checking: "Conta corrente"
+    savings: "Poupança"
+    credit_card: "Cartão de crédito"
+    cash: "Dinheiro"
+
+  category_kinds:
+    income: "Receita"
+    expense: "Despesa"
+
+  entry_types:
+    income: "Entrada"
+    expense: "Saída"
+
+  entry_statuses:
+    pending: "Pendente"
+    paid: "Pago"
+    canceled: "Cancelado"
+
+  # =========================
+  # TEXTOS GERAIS
+  # =========================
+  general:
+    new: "Novo"
+    edit: "Editar"
+    delete: "Excluir"
+    back: "Voltar"
+    save: "Salvar"
+    cancel: "Cancelar"
+    confirm: "Tem certeza?"
+
+  # =========================
+  # CONTAS
+  # =========================
+  accounts:
+    title: "Contas"
+    new: "Nova conta"
+    edit: "Editar conta"
+    name: "Nome"
+    balance: "Saldo"
+    initial_balance: "Saldo inicial"
+    active: "Ativa"
+    inactive: "Inativa"
+    type: "Tipo"
+
+  # =========================
+  # CATEGORIAS
+  # =========================
+  categories:
+    title: "Categorias"
+    new: "Nova categoria"
+    name: "Nome"
+    kind: "Tipo"
+
+  # =========================
+  # LANÇAMENTOS
+  # =========================
+  entries:
+    title: "Lançamentos"
+    new: "Novo lançamento"
+    description: "Descrição"
+    amount: "Valor"
+    date: "Data"
+    status: "Status"
+    type: "Tipo"
+
+  # =========================
+  # HOME
+  # =========================
+  home:
+    title: "Controle Financeiro"
+    subtitle: "Organize suas finanças de forma simples e eficiente"
+
+  # =========================
+  # DEVISE (LOGIN)
+  # =========================
+  devise:
+    sessions:
+      new:
+        sign_in: "Entrar"
+    registrations:
+      new:
+        sign_up: "Criar conta"
+    shared:
+      links:
+        forgot_password: "Esqueceu sua senha?"

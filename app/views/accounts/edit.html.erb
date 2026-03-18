@@ -1,12 +1,5 @@
-<% content_for :title, "Editing account" %>
+<div class="container mt-4">
+  <h1 class="mb-4">Editar conta</h1>
 
-<h1>Editing account</h1>
-
-<%= render "form", account: @account %>
-
-<br>
-
-<div>
-  <%= link_to "Show this account", @account %> |
-  <%= link_to "Back to accounts", accounts_path %>
+  <%= render "form", account: @account %>
 </div>

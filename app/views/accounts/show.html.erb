@@ -1,10 +1,26 @@
-<p style="color: green"><%= notice %></p>
+<div class="container mt-4">
+  <% if notice.present? %>
+    <div class="alert alert-success"><%= notice %></div>
+  <% end %>
 
-<%= render @account %>
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <h1 class="card-title mb-4"><%= @account.name %></h1>
 
-<div>
-  <%= link_to "Edit this account", edit_account_path(@account) %> |
-  <%= link_to "Back to accounts", accounts_path %>
+      <p><strong>Tipo:</strong> <%= @account.account_type.name %></p>
+      <p>
+        <strong>Saldo inicial:</strong>
+        <%= number_to_currency(@account.initial_balance, unit: "R$ ", separator: ",", delimiter: ".") %>
+      </p>
+      <p><strong>Status:</strong> <%= @account.active ? "Ativa" : "Inativa" %></p>
 
-  <%= button_to "Destroy this account", @account, method: :delete %>
+      <div class="d-flex gap-2 mt-4">
+        <%= link_to "Editar", edit_account_path(@account), class: "btn btn-primary" %>
+        <%= link_to "Voltar", accounts_path, class: "btn btn-secondary" %>
+        <%= link_to "Excluir", account_path(@account),
+              data: { turbo_method: :delete, turbo_confirm: "Tem certeza?" },
+              class: "btn btn-danger" %>
+      </div>
+    </div>
+  </div>
 </div>

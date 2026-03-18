@@ -1,16 +1,80 @@
-<p style="color: green"><%= notice %></p>
+<% content_for :title, "Contas | Controle Financeiro" %>
 
-<% content_for :title, "Accounts" %>
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <div>
+    <h2 class="fw-bold mb-1">Contas</h2>
+    <p class="text-secondary mb-0">Gerencie suas contas financeiras</p>
+  </div>
 
-<h1>Accounts</h1>
+  <%= link_to "Nova conta", new_account_path, class: "btn btn-primary" %>
+</div>
 
-<div id="accounts">
+<div class="row g-4 mb-4">
+  <div class="col-md-4">
+    <div class="card p-4 dashboard-card">
+      <p class="text-secondary mb-2">Saldo total</p>
+      <h3 class="fw-bold text-success mb-0">
+        <%= number_to_currency(@total_balance, unit: "R$ ", separator: ",", delimiter: ".") %>
+      </h3>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="card p-4 dashboard-card">
+      <p class="text-secondary mb-2">Total de contas</p>
+      <h3 class="fw-bold mb-0"><%= @accounts_count %></h3>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="card p-4 dashboard-card">
+      <p class="text-secondary mb-2">Contas ativas</p>
+      <h3 class="fw-bold mb-0"><%= @active_accounts_count %></h3>
+    </div>
+  </div>
+</div>
+
+<div class="row g-4">
   <% @accounts.each do |account| %>
-    <%= render account %>
-    <p>
-      <%= link_to "Show this account", account %>
-    </p>
+    <div class="col-md-6 col-lg-4">
+      <div class="card p-3 h-100">
+        <div class="d-flex justify-content-between align-items-start mb-3">
+          <div>
+            <h5 class="fw-semibold mb-1"><%= account.name %></h5>
+            <p class="text-secondary mb-0">
+              <%= account.account_type&.name || "Sem tipo" %>
+            </p>
+          </div>
+
+          <% if account.active %>
+            <span class="badge bg-success">Ativa</span>
+          <% else %>
+            <span class="badge bg-secondary">Inativa</span>
+          <% end %>
+        </div>
+
+        <div class="mb-3">
+          <p class="text-secondary mb-1">Saldo inicial</p>
+          <h4 class="fw-bold text-success mb-0">
+            <%= number_to_currency(account.initial_balance, unit: "R$ ", separator: ",", delimiter: ".") %>
+          </h4>
+        </div>
+
+        <div class="d-flex gap-2 mt-auto">
+          <%= link_to "Ver", account_path(account), class: "btn btn-outline-primary btn-sm w-100" %>
+          <%= link_to "Editar", edit_account_path(account), class: "btn btn-outline-secondary btn-sm w-100" %>
+          <%= link_to "Excluir", account_path(account),
+                data: { turbo_method: :delete, turbo_confirm: "Tem certeza?" },
+                class: "btn btn-outline-danger btn-sm w-100" %>
+        </div>
+      </div>
+    </div>
   <% end %>
 </div>
 
-<%= link_to "New account", new_account_path %>
+<% if @accounts.empty? %>
+  <div class="text-center mt-5">
+    <p class="text-secondary">Nenhuma conta cadastrada ainda.</p>
+    <%= link_to "Criar primeira conta", new_account_path, class: "btn btn-primary mt-2" %>
+  </div>
+<% end %>

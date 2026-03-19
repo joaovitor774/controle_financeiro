@@ -60,6 +60,17 @@ class EntriesController < ApplicationController
     end
   end
 
+  def update_status
+    @entry = current_user.entries.find(params[:id])
+    new_status = EntryStatus.find_by(name: params[:status])
+
+    if new_status.present? && @entry.update(entry_status: new_status)
+      redirect_back fallback_location: reports_path, notice: "Status atualizado com sucesso."
+    else
+      redirect_back fallback_location: reports_path, alert: "Não foi possível atualizar o status."
+    end
+  end
+
   private
 
   def set_entry
@@ -67,36 +78,36 @@ class EntriesController < ApplicationController
   end
 
   def load_dependencies
-  @accounts = current_user.accounts
-  @categories = current_user.categories.includes(:category_kind)
+    @accounts = current_user.accounts
+    @categories = current_user.categories.includes(:category_kind)
 
-  @income_categories = @categories.select { |c| c.category_kind&.name == "income" }
-  @expense_categories = @categories.select { |c| c.category_kind&.name == "expense" }
+    @income_categories = @categories.select { |c| c.category_kind&.name == "income" }
+    @expense_categories = @categories.select { |c| c.category_kind&.name == "expense" }
 
-  @entry_type_options = EntryType.all.map do |entry_type|
-    label =
-      case entry_type.name
-      when "income" then "Entrada"
-      when "expense" then "Saída"
-      else entry_type.name
-      end
+    @entry_type_options = EntryType.all.map do |entry_type|
+      label =
+        case entry_type.name
+        when "income" then "Entrada"
+        when "expense" then "Saída"
+        else entry_type.name
+        end
 
-    [label, entry_type.id]
-  end
+      [label, entry_type.id]
+    end
 
-  @entry_status_options = EntryStatus.all.map do |entry_status|
-    label =
-      case entry_status.name
-      when "paid" then "Pago"
-      when "pending" then "Pendente"
-      when "canceled" then "Cancelado"
-      else entry_status.name
-      end
+    @entry_status_options = EntryStatus.all.map do |entry_status|
+      label =
+        case entry_status.name
+        when "paid" then "Pago"
+        when "pending" then "Pendente"
+        when "canceled" then "Cancelado"
+        else entry_status.name
+        end
 
-    [label, entry_status.id]
-  end
+      [label, entry_status.id]
+    end
 
-  @paid_status_id = EntryStatus.find_by(name: "paid")&.id
+    @paid_status_id = EntryStatus.find_by(name: "paid")&.id
   end
 
   def entry_params

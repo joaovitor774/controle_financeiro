@@ -6,27 +6,57 @@
     <p class="text-secondary mb-0">Acompanhe suas movimentações por período</p>
   </div>
 </div>
+
 <div class="d-flex justify-content-between mb-3">
   <h4 class="fw-bold">Transações do período</h4>
 
   <%= link_to "Exportar PDF",
-      report_pdf_path(start_date: @start_date, end_date: @end_date),
+      report_pdf_path(
+        start_date: @start_date,
+        end_date: @end_date,
+        entry_type: params[:entry_type],
+        entry_status: params[:entry_status]
+      ),
       class: "btn btn-primary" %>
 </div>
+
 <div class="card p-4 mb-4">
-  <%= form_with url: reports_path, method: :get, local: true, class: "row g-3 align-items-end" do |form| %>
-    <div class="col-md-4">
-      <%= form.label :start_date, "Data inicial", class: "form-label" %>
-      <%= form.date_field :start_date, value: @start_date, class: "form-control" %>
+  <%= form_with url: reports_path, method: :get, local: true, class: "row g-3 align-items-end" do %>
+    <div class="col-md-3">
+      <%= label_tag :start_date, "Data inicial", class: "form-label" %>
+      <%= date_field_tag :start_date, @start_date, class: "form-control" %>
     </div>
 
-    <div class="col-md-4">
-      <%= form.label :end_date, "Data final", class: "form-label" %>
-      <%= form.date_field :end_date, value: @end_date, class: "form-control" %>
+    <div class="col-md-3">
+      <%= label_tag :end_date, "Data final", class: "form-label" %>
+      <%= date_field_tag :end_date, @end_date, class: "form-control" %>
     </div>
 
-    <div class="col-md-4">
-      <%= form.submit "Filtrar", class: "btn btn-primary w-100" %>
+    <div class="col-md-2">
+      <%= label_tag :entry_type, "Tipo", class: "form-label" %>
+      <%= select_tag :entry_type,
+            options_for_select([
+              ["Todos", ""],
+              ["Entrada", "income"],
+              ["Saída", "expense"]
+            ], params[:entry_type]),
+            class: "form-select" %>
+    </div>
+
+    <div class="col-md-2">
+      <%= label_tag :entry_status, "Status", class: "form-label" %>
+      <%= select_tag :entry_status,
+            options_for_select([
+              ["Todos", ""],
+              ["Pendente", "pending"],
+              ["Pago", "paid"],
+              ["Cancelado", "canceled"]
+            ], params[:entry_status]),
+            class: "form-select" %>
+    </div>
+
+    <div class="col-md-2">
+      <%= submit_tag "Filtrar", class: "btn btn-primary w-100" %>
     </div>
   <% end %>
 </div>
@@ -91,18 +121,51 @@
                   <span class="badge bg-danger">Saída</span>
                 <% end %>
               </td>
+
               <td>
-                <% case entry.entry_status&.name %>
-                <% when "paid" %>
-                  <span class="badge bg-primary">Pago</span>
-                <% when "pending" %>
-                  <span class="badge bg-warning text-dark">Pendente</span>
-                <% when "canceled" %>
-                  <span class="badge bg-secondary">Cancelado</span>
-                <% else %>
-                  <span class="badge bg-light text-dark">-</span>
-                <% end %>
-              </td>
+  <div class="dropdown">
+    <% case entry.entry_status&.name %>
+    <% when "paid" %>
+      <button class="btn btn-primary btn-sm py-0 px-2 dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 0.75rem; border-radius: 0.4rem;">
+        Pago
+      </button>
+    <% when "pending" %>
+      <button class="btn btn-warning btn-sm py-0 px-2 dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 0.75rem; border-radius: 0.4rem;">
+        Pendente
+      </button>
+    <% when "canceled" %>
+      <button class="btn btn-secondary btn-sm py-0 px-2 dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 0.75rem; border-radius: 0.4rem;">
+        Cancelado
+      </button>
+    <% else %>
+      <button class="btn btn-light btn-sm py-0 px-2 dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 0.75rem; border-radius: 0.4rem;">
+        -
+      </button>
+    <% end %>
+
+    <ul class="dropdown-menu">
+  <li>
+    <%= link_to "Pago",
+        update_status_entry_path(entry, status: "paid"),
+        data: { turbo_method: :patch },
+        class: "dropdown-item" %>
+  </li>
+  <li>
+    <%= link_to "Pendente",
+        update_status_entry_path(entry, status: "pending"),
+        data: { turbo_method: :patch },
+        class: "dropdown-item" %>
+  </li>
+  <li>
+    <%= link_to "Cancelado",
+        update_status_entry_path(entry, status: "canceled"),
+        data: { turbo_method: :patch },
+        class: "dropdown-item text-danger" %>
+    </li>
+</ul>
+  </div>
+</td>
+
               <td class="text-end fw-semibold <%= entry.entry_type&.name == 'income' ? 'text-success' : 'text-danger' %>">
                 <%= number_to_currency(entry.amount, unit: "R$ ", separator: ",", delimiter: ".") %>
               </td>

@@ -1,5 +1,10 @@
 Rails.application.routes.draw do
-  resources :entries
+  resources :entries do
+    member do
+      patch :update_status
+    end
+  end
+
   devise_for :users
 
   authenticated :user do
@@ -13,6 +18,7 @@ Rails.application.routes.draw do
   get "dashboard", to: "dashboard#index"
   get "reports", to: "reports#index"
   get "reports/pdf", to: "reports#pdf", as: :report_pdf
+
   resources :accounts
   resources :categories
 end

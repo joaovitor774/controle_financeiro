@@ -169,6 +169,32 @@
               <td class="text-end fw-semibold <%= entry.entry_type&.name == 'income' ? 'text-success' : 'text-danger' %>">
                 <%= number_to_currency(entry.amount, unit: "R$ ", separator: ",", delimiter: ".") %>
               </td>
+              <td class="text-end fw-semibold <%= entry.entry_type&.name == 'income' ? 'text-success' : 'text-danger' %>">
+  <%= number_to_currency(entry.amount, unit: "R$ ", separator: ",", delimiter: ".") %>
+</td>
+
+<td class="text-end">
+  <div class="dropdown">
+    <button class="btn btn-sm btn-light" type="button" data-bs-toggle="dropdown">
+      ⋮
+    </button>
+
+    <ul class="dropdown-menu dropdown-menu-end">
+      <li>
+        <%= link_to "Editar",
+            edit_entry_path(entry),
+            class: "dropdown-item" %>
+      </li>
+
+      <li>
+        <%= link_to "Excluir",
+            entry_path(entry),
+            data: { turbo_method: :delete, turbo_confirm: "Tem certeza?" },
+            class: "dropdown-item text-danger" %>
+      </li>
+    </ul>
+  </div>
+</td>
             </tr>
           <% end %>
         </tbody>

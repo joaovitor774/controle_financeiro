@@ -41,7 +41,7 @@ class EntriesController < ApplicationController
   def update
     respond_to do |format|
       if @entry.update(entry_params)
-        format.html { redirect_to dashboard_path, notice: "Transação atualizada com sucesso.", status: :see_other }
+        format.html { redirect_to reports_path, notice: "Transação atualizada com sucesso.", status: :see_other }
         format.json { render :show, status: :ok, location: @entry }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -55,7 +55,7 @@ class EntriesController < ApplicationController
     @entry.destroy!
 
     respond_to do |format|
-      format.html { redirect_to entries_path, notice: "Transação removida com sucesso.", status: :see_other }
+      format.html { redirect_to reports_path, notice: "Transação removida com sucesso.", status: :see_other }
       format.json { head :no_content }
     end
   end

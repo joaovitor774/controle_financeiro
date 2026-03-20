@@ -85,7 +85,7 @@ gem "rails-i18n"
 #visualizar o banco de dados
 gem "rails_db"
 
-gem "bcrypt", "~> 3.1.7"
+gem "bcrypt", "~> 3.1.22"
 
 #Autenticação
 gem "devise"
